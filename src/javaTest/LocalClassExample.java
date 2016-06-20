@@ -1,3 +1,5 @@
+package javaTest;
+
 public class LocalClassExample {
 
      static String regularExpression = "[^0-9]";

@@ -1,3 +1,5 @@
+package javaTest;
+
 import lambdaTest.Test;
 
 public class Main {

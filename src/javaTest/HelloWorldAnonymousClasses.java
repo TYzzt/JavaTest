@@ -1,3 +1,5 @@
+package javaTest;
+
 public class HelloWorldAnonymousClasses {
 
     interface HelloWorld {

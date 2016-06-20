@@ -1,3 +1,5 @@
+package javaTest;
+
 public class DataStructure {
 
     // Create an array
