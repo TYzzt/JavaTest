@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  * 智联招聘网解析
  */
-public class ZhiLIanFilter {
+public class ZhiLianWeb {
 
     private  String queryUrl = "http://sou.zhaopin.com/jobs/searchresult.ashx?jl=%E5%A4%A9%E6%B4%A5&kw=%E4%BC%9A%E8%AE%A1&sb=0&sm=0&fl=531&isadv=0&isfilter=1&p=1&pd=1";
 

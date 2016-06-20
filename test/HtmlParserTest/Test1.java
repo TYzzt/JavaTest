@@ -3,7 +3,7 @@ package HtmlParserTest;
 import HTMLParser.HtmlLinkParser;
 import HTMLParser.JobRecord;
 import HTMLParser.LinkFilter;
-import HTMLParser.ZhiLIanFilter;
+import HTMLParser.ZhiLianWeb;
 import org.junit.Test;
 
 import java.util.Iterator;
@@ -40,7 +40,7 @@ public class Test1 {
 
     @Test
     public void testgetJob(){
-        List<JobRecord> list =  new ZhiLIanFilter().getRecord();
+        List<JobRecord> list =  new ZhiLianWeb().getRecord();
         System.out.println(1);
     }
 
