@@ -17,6 +17,15 @@ public class JobRecord {
     private String desc;//描述
     private String attraction;//吸引力
     private String publishData; //发布日期
+    private String state; //是否审核
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     @Override
     public String toString() {

@@ -24,14 +24,14 @@ public class HtmlLinkParser {
             Parser parser = new Parser(url);
             parser.setEncoding("gb2312");
 
-            // 2.1、自定义一个Filter，用于过滤<Frame >标签，然后取得标签中的src属性值
-            NodeFilter frameNodeFilter = new NodeFilter() {
-                @Override
-                public boolean accept(Node node) {
-                    if (node.getText().startsWith("frame src=")) {
-                        return true;
-                    } else {
-                        return false;
+                        // 2.1、自定义一个Filter，用于过滤<Frame >标签，然后取得标签中的src属性值
+                        NodeFilter frameNodeFilter = new NodeFilter() {
+                            @Override
+                            public boolean accept(Node node) {
+                                if (node.getText().startsWith("frame src=")) {
+                                    return true;
+                                } else {
+                                    return false;
                     }
                 }
             };

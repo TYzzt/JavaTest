@@ -8,6 +8,10 @@ import org.htmlparser.tags.Div;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,17 +26,24 @@ import java.util.Set;
  */
 public class ZhiLianWeb {
 
-    private  String queryUrl = "http://sou.zhaopin.com/jobs/searchresult.ashx?jl=%E5%A4%A9%E6%B4%A5&kw=%E4%BC%9A%E8%AE%A1&sb=0&sm=0&fl=531&isadv=0&isfilter=1&p=1&pd=1";
+    private String queryUrl = "http://sou.zhaopin.com/jobs/searchresult.ashx?jl=%E5%A4%A9%E6%B4%A5&kw=%E4%BC%9A%E8%AE%A1&sb=0&sm=0&fl=531&isadv=0&isfilter=1&p=1&pd=1";
+
+    public void setQueryUrl(String queryUrl) {
+        this.queryUrl = queryUrl;
+    }
 
     public  JobRecord extractLinks(String url) {
         JobRecord jobRecord = new JobRecord();
         jobRecord.setUrl(url);
         try {
             // 1、构造一个Parser，并设置相关的属性
-            Parser parser = new Parser(url);
+            URL url1 = new URL(url);
+            URLConnection connection = url1.openConnection();
+            connection.setRequestProperty("Content-Type","text/html; charset=utf-8");
+            connection.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
+            Parser parser = new Parser(connection);
             parser.setEncoding("utf-8");
-
-            System.out.println(parser.toString());
+           /* parser.getConnection().setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());*/
 
             NodeFilter filterClassTitleLi = new HasAttributeFilter("class","inner-left fl");
             NodeFilter filterClassForm = new HasAttributeFilter("class","terminal-ul clearfix");
@@ -65,7 +76,9 @@ public class ZhiLianWeb {
                 }
             }
 
-            parser = new Parser(url);
+            URLConnection connection2 = url1.openConnection();
+            connection2.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
+            parser = new Parser(connection2);
             parser.setEncoding("utf-8");
             NodeList nodeListForm = parser.extractAllNodesThatMatch(filterClassForm);//内容
             String str = nodeListForm.asString();
@@ -81,7 +94,9 @@ public class ZhiLianWeb {
             jobRecord.setNumber(strArray[7].substring(5));
             jobRecord.setClasses(strArray[8].substring(5));
 
-            parser = new Parser(url);   //描述
+            URLConnection connection3 = url1.openConnection();
+            connection3.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
+            parser = new Parser(connection3);   //描述
             parser.setEncoding("utf-8");
             NodeList nodeListForm2 = parser.extractAllNodesThatMatch(filterClassFormIneer);
 
@@ -96,11 +111,15 @@ public class ZhiLianWeb {
            }
         } catch (ParserException e) {
             e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return jobRecord;
     }
 
-    public  Set<String> getUrls(){
+    public  Set<String> getUrls(String fromUrl){
         LinkFilter linkFilter = new LinkFilter(){
             @Override
             public boolean accept(String url) {
@@ -111,18 +130,29 @@ public class ZhiLianWeb {
                }
             }
         };
-        Set<String> urlSet = HtmlLinkParser.extractLinks(queryUrl, linkFilter);
+        Set<String> urlSet = HtmlLinkParser.extractLinks(fromUrl, linkFilter);
 
         return urlSet;
     }
 
+    public  List<JobRecord> getRecord() throws InterruptedException {
+        System.out.println("begin!");
 
-    public  List<JobRecord> getRecord(){
-        Set<String> urlSet = getUrls();
-        Iterator<String> it = urlSet.iterator();
         List<JobRecord> list = new ArrayList<>();
+        Set<String> urlSet = getUrls(queryUrl); //获取url
+
+        Iterator<String> it = urlSet.iterator();
         while(it.hasNext()){
+            Thread.sleep(1000);
             list.add(extractLinks(it.next()));
+        }
+        //翻页
+        String queryUrl2 = queryUrl.substring(0,queryUrl.length()-1)+"2";
+        Set<String> urlSet2 = getUrls(queryUrl2);
+        Iterator<String> it2 = urlSet2.iterator();
+        while(it2.hasNext()){
+            Thread.sleep(1000);
+            list.add(extractLinks(it2.next()));
         }
         return list;
     }

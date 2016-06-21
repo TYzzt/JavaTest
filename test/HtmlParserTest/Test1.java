@@ -1,9 +1,6 @@
 package HtmlParserTest;
 
-import HTMLParser.HtmlLinkParser;
-import HTMLParser.JobRecord;
-import HTMLParser.LinkFilter;
-import HTMLParser.ZhiLianWeb;
+import HTMLParser.*;
 import org.junit.Test;
 
 import java.util.Iterator;
@@ -39,10 +36,13 @@ public class Test1 {
 
 
     @Test
-    public void testgetJob(){
+    public void testgetJob() throws InterruptedException {
         List<JobRecord> list =  new ZhiLianWeb().getRecord();
         System.out.println(1);
     }
-
+    @Test
+    public void test(){
+        System.out.println(HtmlParserUtils.getRandomIp());
+    }
 
 }
