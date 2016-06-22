@@ -15,7 +15,7 @@ public class HtmlParserUtils {
     }
 
     public static String removeHtmlTag(String str){
-        return str.replaceAll("&nbsp;","");
+        return str.replaceAll("&nbsp;","").replaceAll("\t","");
     }
 
     public static String  getRandomIp(){
