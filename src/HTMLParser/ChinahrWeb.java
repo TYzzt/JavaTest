@@ -22,7 +22,7 @@ import java.util.Set;
  */
 
 /**
- * 智联招聘网解析
+ * 中华英才网解析
  */
 public class ChinahrWeb {
 

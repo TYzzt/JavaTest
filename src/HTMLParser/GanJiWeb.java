@@ -20,6 +20,10 @@ import java.util.Set;
 /**
  * Created by ZhaoTao on 2016/6/22.
  */
+
+/**
+ * 赶集网招聘信息
+ */
 public class GanJiWeb {
     private String queryUrl = "http://tj.ganji.com/zpcaikuai/z1/o1";
 

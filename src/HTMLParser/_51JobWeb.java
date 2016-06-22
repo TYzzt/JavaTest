@@ -16,6 +16,10 @@ import java.util.*;
 /**
  * Created by ZhaoTao on 2016/6/21.
  */
+
+/**
+ * 51job招聘
+ */
 public class _51JobWeb {
     private String queryUrl = "http://search.51job.com/jobsearch/search_result.php?fromJs=1&jobarea=050000%2C00&funtype=0000&industrytype=00&keyword=%E4%BC%9A%E8%AE%A1&keywordtype=2&lang=c&stype=2&postchannel=0000&fromType=1&confirmdate=9&curr_page=1";
 

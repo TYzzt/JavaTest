@@ -22,7 +22,7 @@ import java.util.Set;
  */
 
 /**
- * 智联招聘网解析
+ * 智联招聘网
  */
 public class ZhiLianWeb {
 
