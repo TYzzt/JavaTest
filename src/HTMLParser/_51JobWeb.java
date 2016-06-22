@@ -68,7 +68,6 @@ public class _51JobWeb {
             jobRecord.setAddress(strArray[4]);
             jobRecord.setCompany(strArray[7]);
 
-
             URLConnection connection2 = url1.openConnection();
             connection2.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
             parser = new Parser(connection2);

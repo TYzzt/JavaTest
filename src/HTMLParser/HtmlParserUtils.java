@@ -14,6 +14,10 @@ public class HtmlParserUtils {
         return str.replaceAll(" ","").replaceAll("\r\n","|");
     }
 
+    public static String removeSpaceEnter3(String str){
+        return str.replaceAll(" ","").replaceAll("\r","").replaceAll("\n"," ");
+    }
+
     public static String removeHtmlTag(String str){
         return str.replaceAll("&nbsp;","").replaceAll("\t","");
     }

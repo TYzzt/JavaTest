@@ -46,6 +46,16 @@ public class Test1 {
         System.out.println(1);
     }
     @Test
+    public void testgetJobChin() throws InterruptedException {
+        List<JobRecord> list =  new ChinahrWeb().getRecord();
+        System.out.println(1);
+    }
+    @Test
+    public void testgetJob58() throws InterruptedException {
+        List<JobRecord> list =  new _58TcWeb().getRecord();
+        System.out.println(1);
+    }
+    @Test
     public void test(){
         System.out.println(HtmlParserUtils.getRandomIp());
     }
@@ -64,6 +74,16 @@ public class Test1 {
     public void test51job(){
         _51JobWeb f = new _51JobWeb();
         f.extractLinks("http://jobs.51job.com/tianjin/78907086.html?s=0");
+    }
+    @Test
+    public void testChianHr(){
+        ChinahrWeb f = new ChinahrWeb();
+        f.extractLinks("http://www.chinahr.com/job/13-455745.html");
+    }
+    @Test
+    public void test58(){
+        _58TcWeb f = new _58TcWeb();
+        f.extractLinks("http://tj.58.com/zpcaiwushenji/25269518676015x.shtml?psid=151983199192225748380042638&entinfo=25269518676015_3&role=3&iuType=j_2&PGTID=0d303653-0001-2d62-b709-c64f9b35fd2f&ClickID=3");
     }
 
 }

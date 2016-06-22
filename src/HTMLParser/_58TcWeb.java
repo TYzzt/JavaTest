@@ -18,28 +18,39 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by ZhaoTao on 2016/6/20.
+ * Created by ZhaoTao on 2016/6/22.
  */
+public class _58TcWeb {
+    private String queryUrl = "http://tj.58.com/zpcaiwushenji/pn1/?key=%E4%BC%9A%E8%AE%A1&cmcskey=%E4%BC%9A%E8%AE%A1&final=1";
 
-/**
- * 智联招聘网解析
- */
-public class ChinahrWeb {
-
-    private String queryUrl = "http://www.chinahr.com/sou/?city=35%2C399&keyword=%E4%BC%9A%E8%AE%A1&refreshTime=1&page=1";
-
-    public void setQueryUrl(String queryUrl) {
-        this.queryUrl = queryUrl;
+    public void setQueryUrll(int i) {
+        queryUrl = "http://tj.58.com/zpcaiwushenji/pn"+i+"/?key=%E4%BC%9A%E8%AE%A1&cmcskey=%E4%BC%9A%E8%AE%A1&final=1";
     }
 
-    public  JobRecord extractLinks(String url) {
+    public Set<String> getUrls(String fromUrl){
+        LinkFilter linkFilter = new LinkFilter(){
+            @Override
+            public boolean accept(String url) {
+                if(url.contains("http://tj.58.com/zpcaiwushenji")&&url.contains("x.shtml")){
+                    return true;
+                }else {
+                    return false;
+                }
+            }
+        };
+        Set<String> urlSet = HtmlLinkParser.extractLinks(fromUrl, linkFilter);
+
+        return urlSet;
+    }
+
+    public  JobRecord extractLinks(String url){
         JobRecord jobRecord = new JobRecord();
         jobRecord.setUrl(url);
-        //todo 时间
         try {
-            NodeFilter filterClassTitleLi = new HasAttributeFilter("class","base_info");
-            NodeFilter filterClassA = new HasAttributeFilter("class","job_fit_tags");
-            NodeFilter filterClassFormIneer = new HasAttributeFilter("class","job_intro_wrap");
+
+            NodeFilter filterClassA = new HasAttributeFilter("class","posinfo");
+            NodeFilter filterClassB = new HasAttributeFilter("class","infoview clearfix");
+            NodeFilter filterClassFormIneer = new HasAttributeFilter("class","posMsg borb");
             NodeFilter titleNodeFilter = new NodeClassFilter(TitleTag.class);
 
             // 1、构造一个Parser，并设置相关的属性
@@ -50,42 +61,40 @@ public class ChinahrWeb {
             Parser parser = new Parser(connection);
             parser.setEncoding("utf-8");
 
-            NodeList nodeList = parser.extractAllNodesThatMatch(filterClassTitleLi);//标题
+            NodeList nodeList = parser.extractAllNodesThatMatch(titleNodeFilter);//标题
             String str = nodeList.asString();
-            String str2 = HtmlParserUtils.removeSpaceEnter2(str);
-            String strArray[] = HtmlParserUtils.removeHtmlTag(str2).split("\\|");
-            jobRecord.setTitle(strArray[3]);
-            jobRecord.setPay(strArray[8]);
-            jobRecord.setAddress(strArray[11]);
-            jobRecord.setNature(strArray[14]);
-            jobRecord.setEducation(strArray[17]);
-            jobRecord.setExperience(strArray[20]);
-
+            jobRecord.setTitle(str.substring(0,str.indexOf("_")));
+            jobRecord.setCompany(str.substring(str.indexOf("_")+1,str.indexOf("最新招聘信息")));
 
             URLConnection connection2 = url1.openConnection();
             connection2.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
             parser = new Parser(connection2);
             parser.setEncoding("utf-8");
             NodeList nodeListForm = parser.extractAllNodesThatMatch(filterClassA);//内容
-            str = nodeListForm.asString();
-            jobRecord.setAttraction(HtmlParserUtils.removeHtmlTag(HtmlParserUtils.removeSpaceEnter3(str)));
+            str = nodeListForm.asString();String str2 = HtmlParserUtils.removeSpaceEnter2(str);
+            String strArray[] = HtmlParserUtils.removeHtmlTag(str2).split("\\|");
+            jobRecord.setPay(strArray[6]);
+            jobRecord.setEducation(strArray[10]);
+            jobRecord.setClasses(strArray[17]);
+            jobRecord.setNumber(strArray[18]);
+            jobRecord.setExperience(strArray[22]);
+            jobRecord.setAddress(strArray[27]);
 
             URLConnection connection3 = url1.openConnection();
             connection3.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
-            parser = new Parser(connection3);   //描述
+            parser = new Parser(connection3);
             parser.setEncoding("utf-8");
-            NodeList nodeListForm2 = parser.extractAllNodesThatMatch(filterClassFormIneer);
+            NodeList nodeListForm2 = parser.extractAllNodesThatMatch(filterClassB);
             str = nodeListForm2.asString();
-            jobRecord.setDesc(HtmlParserUtils.removeSpaceEnter(str));
+            jobRecord.setAttraction(HtmlParserUtils.removeSpaceEnter(str));
 
             URLConnection connection4 = url1.openConnection();
             connection4.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
             parser = new Parser(connection4);
             parser.setEncoding("utf-8");
-            NodeList nodeListForm3 = parser.extractAllNodesThatMatch(titleNodeFilter);
+            NodeList nodeListForm3 = parser.extractAllNodesThatMatch(filterClassFormIneer);
             str = nodeListForm3.asString();
-            jobRecord.setCompany(str.substring(str.indexOf("_")+1,str.indexOf("招聘信息 —")));
-
+            jobRecord.setDesc(HtmlParserUtils.removeHtmlTag(HtmlParserUtils.removeSpaceEnter(str)));
 
         } catch (ParserException e) {
             e.printStackTrace();
@@ -98,28 +107,13 @@ public class ChinahrWeb {
         }
     }
 
-    public  Set<String> getUrls(String fromUrl){
-        LinkFilter linkFilter = new LinkFilter(){
-            @Override
-            public boolean accept(String url) {
-               if(url.contains("http://www.chinahr.com/job")&&url.contains(".html")){
-                   return true;
-               }else {
-                   return false;
-               }
-            }
-        };
-        Set<String> urlSet = HtmlLinkParser.extractLinks(fromUrl, linkFilter);
+    public List<JobRecord> getRecord() throws InterruptedException {
 
-        return urlSet;
-    }
-
-    public  List<JobRecord> getRecord() throws InterruptedException {
         List<JobRecord> list = new ArrayList<>();
 
-        for(int i=1;i<=5;i++){
-            String queryUrlTemp = queryUrl.substring(0,queryUrl.length()-1)+i;
-            Set<String> urlSetTemp = getUrls(queryUrlTemp);
+        for(int i=1;i<=3;i++){
+            this.setQueryUrll(i);
+            Set<String> urlSetTemp = getUrls(queryUrl);
             Iterator<String> itTemp = urlSetTemp.iterator();
             while(itTemp.hasNext()){
                 Thread.sleep(1000);

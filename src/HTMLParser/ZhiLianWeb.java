@@ -140,7 +140,6 @@ public class ZhiLianWeb {
     }
 
     public  List<JobRecord> getRecord() throws InterruptedException {
-        System.out.println("begin!");
 
         List<JobRecord> list = new ArrayList<>();
         Set<String> urlSet = getUrls(queryUrl); //获取url
