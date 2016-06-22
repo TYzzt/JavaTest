@@ -147,7 +147,10 @@ public class ZhiLianWeb {
         Iterator<String> it = urlSet.iterator();
         while(it.hasNext()){
             Thread.sleep(1000);
-            list.add(extractLinks(it.next()));
+            JobRecord jobRecord = extractLinks(it.next());
+            if (null != jobRecord.getTitle()) {
+                list.add(jobRecord);
+            }
         }
         //翻页
         String queryUrl2 = queryUrl.substring(0,queryUrl.length()-1)+"2";
@@ -155,7 +158,10 @@ public class ZhiLianWeb {
         Iterator<String> it2 = urlSet2.iterator();
         while(it2.hasNext()){
             Thread.sleep(1000);
-            list.add(extractLinks(it2.next()));
+            JobRecord jobRecord = extractLinks(it2.next());
+            if (null != jobRecord.getTitle()) {
+                list.add(jobRecord);
+            }
         }
         return list;
     }

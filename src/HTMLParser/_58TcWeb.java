@@ -117,7 +117,10 @@ public class _58TcWeb {
             Iterator<String> itTemp = urlSetTemp.iterator();
             while(itTemp.hasNext()){
                 Thread.sleep(1000);
-                list.add(extractLinks(itTemp.next()));
+                JobRecord jobRecord = extractLinks(itTemp.next());
+                if (null != jobRecord.getTitle()) {
+                    list.add(jobRecord);
+                }
             }
         }
         return list;

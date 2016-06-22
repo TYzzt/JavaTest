@@ -55,6 +55,12 @@ public class Test1 {
         List<JobRecord> list =  new _58TcWeb().getRecord();
         System.out.println(1);
     }
+
+    @Test
+    public void testgetJobGj() throws InterruptedException {
+        List<JobRecord> list = new GanJiWeb().getRecord();
+        System.out.println(1);
+    }
     @Test
     public void test(){
         System.out.println(HtmlParserUtils.getRandomIp());
@@ -84,6 +90,12 @@ public class Test1 {
     public void test58(){
         _58TcWeb f = new _58TcWeb();
         f.extractLinks("http://tj.58.com/zpcaiwushenji/25269518676015x.shtml?psid=151983199192225748380042638&entinfo=25269518676015_3&role=3&iuType=j_2&PGTID=0d303653-0001-2d62-b709-c64f9b35fd2f&ClickID=3");
+    }
+
+    @Test
+    public void testgj() {
+        GanJiWeb f = new GanJiWeb();
+        f.extractLinks("http://tj.ganji.com/zpcaiwushenji/1677673895x.htm");
     }
 
 }

@@ -21,17 +21,17 @@ import java.util.Set;
  * Created by ZhaoTao on 2016/6/22.
  */
 public class GanJiWeb {
-    private String queryUrl = "1http://tj.58.com/zpcaiwushenji/pn1/?key=%E4%BC%9A%E8%AE%A1&cmcskey=%E4%BC%9A%E8%AE%A1&final=1";
+    private String queryUrl = "http://tj.ganji.com/zpcaikuai/z1/o1";
 
     public void setQueryUrll(int i) {
-        queryUrl = "http://tj.58.com/zpcaiwushenji/pn"+i+"/?key=%E4%BC%9A%E8%AE%A1&cmcskey=%E4%BC%9A%E8%AE%A1&final=1";
+        queryUrl = "http://tj.ganji.com/zpcaikuai/z1/o" + i;
     }
 
     public Set<String> getUrls(String fromUrl){
         LinkFilter linkFilter = new LinkFilter(){
             @Override
             public boolean accept(String url) {
-                if(url.contains("http://tj.58.com/zpcaiwushenji")&&url.contains("x.shtml")){
+                if (url.contains("http://tj.ganji.com/zpcaiwushenji") && url.contains("x.htm")) {
                     return true;
                 }else {
                     return false;
@@ -48,53 +48,53 @@ public class GanJiWeb {
         jobRecord.setUrl(url);
         try {
 
-            NodeFilter filterClassA = new HasAttributeFilter("class","posinfo");
-            NodeFilter filterClassB = new HasAttributeFilter("class","infoview clearfix");
-            NodeFilter filterClassFormIneer = new HasAttributeFilter("class","posMsg borb");
+            NodeFilter filterClassA = new HasAttributeFilter("class", "clearfix pos-relat");
+            NodeFilter filterClassB = new HasAttributeFilter("class", "d-welf-items");
+            NodeFilter filterClassFormIneer = new HasAttributeFilter("class", "deta-Corp");
             NodeFilter titleNodeFilter = new NodeClassFilter(TitleTag.class);
 
-            // 1、构造一个Parser，并设置相关的属性
             URL url1 = new URL(url);
             URLConnection connection = url1.openConnection();
             connection.setRequestProperty("Content-Type","text/html; charset=utf-8");
             connection.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
             Parser parser = new Parser(connection);
             parser.setEncoding("utf-8");
-
-            NodeList nodeList = parser.extractAllNodesThatMatch(titleNodeFilter);//标题
+            NodeList nodeList = parser.extractAllNodesThatMatch(filterClassA);
             String str = nodeList.asString();
-            jobRecord.setTitle(str.substring(0,str.indexOf("_")));
-            jobRecord.setCompany(str.substring(str.indexOf("_")+1,str.indexOf("最新招聘信息")));
+            String str2 = HtmlParserUtils.removeSpaceEnter2(str);
+            String[] strArray = str2.split("\n");
+
+            jobRecord.setClasses(strArray[2].substring(strArray[2].indexOf("：") + 1));
+            jobRecord.setPay(strArray[5].substring(0, strArray[5].indexOf("急用钱")));
+            jobRecord.setEducation(strArray[6].substring(strArray[2].indexOf("：") + 1));
+            jobRecord.setExperience(strArray[8].substring(strArray[2].indexOf("：") + 1));
+            jobRecord.setNumber(strArray[10].substring(strArray[2].indexOf("：") + 1));
+            jobRecord.setAddress(strArray[19].substring(strArray[2].indexOf("：") + 1));
 
             URLConnection connection2 = url1.openConnection();
             connection2.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
             parser = new Parser(connection2);
             parser.setEncoding("utf-8");
-            NodeList nodeListForm = parser.extractAllNodesThatMatch(filterClassA);//内容
-            str = nodeListForm.asString();String str2 = HtmlParserUtils.removeSpaceEnter2(str);
-            String strArray[] = HtmlParserUtils.removeHtmlTag(str2).split("\\|");
-            jobRecord.setPay(strArray[6]);
-            jobRecord.setEducation(strArray[10]);
-            jobRecord.setClasses(strArray[17]);
-            jobRecord.setNumber(strArray[18]);
-            jobRecord.setExperience(strArray[22]);
-            jobRecord.setAddress(strArray[27]);
+            NodeList nodeListForm = parser.extractAllNodesThatMatch(filterClassB);//内容
+            str = nodeListForm.asString();
+            jobRecord.setAttraction(HtmlParserUtils.removeSpaceEnter3(str));
 
             URLConnection connection3 = url1.openConnection();
             connection3.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
-            parser = new Parser(connection3);
+            parser = new Parser(connection3);   //描述
             parser.setEncoding("utf-8");
-            NodeList nodeListForm2 = parser.extractAllNodesThatMatch(filterClassB);
+            NodeList nodeListForm2 = parser.extractAllNodesThatMatch(filterClassFormIneer);
             str = nodeListForm2.asString();
-            jobRecord.setAttraction(HtmlParserUtils.removeSpaceEnter(str));
+            jobRecord.setDesc(HtmlParserUtils.removeSpaceEnter3(str));
 
             URLConnection connection4 = url1.openConnection();
             connection4.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
             parser = new Parser(connection4);
             parser.setEncoding("utf-8");
-            NodeList nodeListForm3 = parser.extractAllNodesThatMatch(filterClassFormIneer);
+            NodeList nodeListForm3 = parser.extractAllNodesThatMatch(titleNodeFilter);
             str = nodeListForm3.asString();
-            jobRecord.setDesc(HtmlParserUtils.removeHtmlTag(HtmlParserUtils.removeSpaceEnter(str)));
+            jobRecord.setTitle(str.substring(str.indexOf("【") + 1, str.indexOf(",")));
+            jobRecord.setCompany(str.substring(str.indexOf(",") + 1, str.indexOf("】")));
 
         } catch (ParserException e) {
             e.printStackTrace();
@@ -117,7 +117,10 @@ public class GanJiWeb {
             Iterator<String> itTemp = urlSetTemp.iterator();
             while(itTemp.hasNext()){
                 Thread.sleep(1000);
-                list.add(extractLinks(itTemp.next()));
+                JobRecord jobRecord = extractLinks(itTemp.next());
+                if (null != jobRecord.getTitle()) {
+                    list.add(jobRecord);
+                }
             }
         }
         return list;
