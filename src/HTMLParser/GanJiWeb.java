@@ -21,7 +21,7 @@ import java.util.Set;
  * Created by ZhaoTao on 2016/6/22.
  */
 public class GanJiWeb {
-    private String queryUrl = "http://tj.58.com/zpcaiwushenji/pn1/?key=%E4%BC%9A%E8%AE%A1&cmcskey=%E4%BC%9A%E8%AE%A1&final=1";
+    private String queryUrl = "1http://tj.58.com/zpcaiwushenji/pn1/?key=%E4%BC%9A%E8%AE%A1&cmcskey=%E4%BC%9A%E8%AE%A1&final=1";
 
     public void setQueryUrll(int i) {
         queryUrl = "http://tj.58.com/zpcaiwushenji/pn"+i+"/?key=%E4%BC%9A%E8%AE%A1&cmcskey=%E4%BC%9A%E8%AE%A1&final=1";
