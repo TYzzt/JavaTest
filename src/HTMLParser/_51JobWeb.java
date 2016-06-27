@@ -43,9 +43,9 @@ public class _51JobWeb {
         return urlSet;
     }
 
-    public  JobRecord extractLinks(String url){
-        JobRecord jobRecord = new JobRecord();
-        jobRecord.setUrl(url);
+    public JobOperatingPostCollect extractLinks(String url) {
+        JobOperatingPostCollect jobOperatingPostCollect = new JobOperatingPostCollect();
+        jobOperatingPostCollect.setUrl(url);
         try {
 
             NodeFilter filterClassTitleLi = new HasAttributeFilter("class","tHeader tHjob");
@@ -67,10 +67,10 @@ public class _51JobWeb {
             String strTemp = HtmlParserUtils.removeSpaceEnter2(str);
             String strArray[] = HtmlParserUtils.removeHtmlTag(strTemp).split("\\|");
 
-            jobRecord.setTitle(strArray[3]);
-            jobRecord.setPay(strArray[5]);
-            jobRecord.setAddress(strArray[4]);
-            jobRecord.setCompany(strArray[7]);
+            jobOperatingPostCollect.setTitle(strArray[3]);
+            jobOperatingPostCollect.setPay(strArray[5]);
+            jobOperatingPostCollect.setAddress(strArray[4]);
+            jobOperatingPostCollect.setCompany(strArray[7]);
 
             URLConnection connection2 = url1.openConnection();
             connection2.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
@@ -80,14 +80,14 @@ public class _51JobWeb {
             str = nodeListForm.asString();
             strTemp = HtmlParserUtils.removeSpaceEnter2(str);
             strArray = HtmlParserUtils.removeHtmlTag(strTemp).split("\\|");
-            jobRecord.setEducation(strArray[2]);
-            jobRecord.setNumber(strArray[3]);
-            jobRecord.setPublishData(String.valueOf(new Date().getYear()+1900)+"-"+strArray[4].substring(0,5));
+            jobOperatingPostCollect.setEducation(strArray[2]);
+            jobOperatingPostCollect.setNumber(strArray[3]);
+            jobOperatingPostCollect.setPublishData(String.valueOf(new Date().getYear() + 1900) + "-" + strArray[4].substring(0, 5));
             String tempAttraction = "";
             for(int i=9;i<strArray.length;i++){
                 tempAttraction+=" "+strArray[i];
             }
-            jobRecord.setAttraction(tempAttraction);
+            jobOperatingPostCollect.setAttraction(tempAttraction);
 
 
             URLConnection connection3 = url1.openConnection();
@@ -103,7 +103,7 @@ public class _51JobWeb {
             for(int i=0;i<strArray.length-2;i++){
                 sbDesc.append(strArray[i]);
             }
-            jobRecord.setDesc(sbDesc.toString());
+            jobOperatingPostCollect.setDesc(sbDesc.toString());
 
 
             URLConnection connection4 = url1.openConnection();
@@ -115,7 +115,7 @@ public class _51JobWeb {
             str = nodeListForm3.asString();
             strTemp = HtmlParserUtils.removeSpaceEnter2(str);
             strArray = HtmlParserUtils.removeHtmlTag(strTemp).split("\\|");
-            jobRecord.setAddress(HtmlParserUtils.removeHtmlTag(strArray[3]));
+            jobOperatingPostCollect.setAddress(HtmlParserUtils.removeHtmlTag(strArray[3]));
 
         } catch (ParserException e) {
             e.printStackTrace();
@@ -124,21 +124,21 @@ public class _51JobWeb {
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            return jobRecord;
+            return jobOperatingPostCollect;
         }
     }
 
-    public List<JobRecord> getRecord() throws InterruptedException {
+    public List<JobOperatingPostCollect> getRecord() throws InterruptedException {
 
-        List<JobRecord> list = new ArrayList<>();
+        List<JobOperatingPostCollect> list = new ArrayList<>();
         Set<String> urlSet = getUrls(queryUrl); //获取url
 
         Iterator<String> it = urlSet.iterator();
         while(it.hasNext()){
             Thread.sleep(1000);
-            JobRecord jobRecord = extractLinks(it.next());
-            if (null != jobRecord.getTitle()) {
-                list.add(jobRecord);
+            JobOperatingPostCollect jobOperatingPostCollect = extractLinks(it.next());
+            if (null != jobOperatingPostCollect.getTitle()) {
+                list.add(jobOperatingPostCollect);
             }
         }
         //翻页
@@ -147,9 +147,9 @@ public class _51JobWeb {
         Iterator<String> it2 = urlSet2.iterator();
         while(it2.hasNext()){
             Thread.sleep(1000);
-            JobRecord jobRecord = extractLinks(it2.next());
-            if (null != jobRecord.getTitle()) {
-                list.add(jobRecord);
+            JobOperatingPostCollect jobOperatingPostCollect = extractLinks(it2.next());
+            if (null != jobOperatingPostCollect.getTitle()) {
+                list.add(jobOperatingPostCollect);
             }
         }
         return list;

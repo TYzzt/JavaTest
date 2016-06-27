@@ -47,9 +47,9 @@ public class _58TcWeb {
         return urlSet;
     }
 
-    public  JobRecord extractLinks(String url){
-        JobRecord jobRecord = new JobRecord();
-        jobRecord.setUrl(url);
+    public JobOperatingPostCollect extractLinks(String url) {
+        JobOperatingPostCollect jobOperatingPostCollect = new JobOperatingPostCollect();
+        jobOperatingPostCollect.setUrl(url);
         try {
 
             NodeFilter filterClassA = new HasAttributeFilter("class","posinfo");
@@ -67,8 +67,8 @@ public class _58TcWeb {
 
             NodeList nodeList = parser.extractAllNodesThatMatch(titleNodeFilter);//标题
             String str = nodeList.asString();
-            jobRecord.setTitle(str.substring(0,str.indexOf("_")));
-            jobRecord.setCompany(str.substring(str.indexOf("_")+1,str.indexOf("最新招聘信息")));
+            jobOperatingPostCollect.setTitle(str.substring(0, str.indexOf("_")));
+            jobOperatingPostCollect.setCompany(str.substring(str.indexOf("_") + 1, str.indexOf("最新招聘信息")));
 
             URLConnection connection2 = url1.openConnection();
             connection2.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
@@ -77,12 +77,12 @@ public class _58TcWeb {
             NodeList nodeListForm = parser.extractAllNodesThatMatch(filterClassA);//内容
             str = nodeListForm.asString();String str2 = HtmlParserUtils.removeSpaceEnter2(str);
             String strArray[] = HtmlParserUtils.removeHtmlTag(str2).split("\\|");
-            jobRecord.setPay(strArray[6]);
-            jobRecord.setEducation(strArray[10]);
-            jobRecord.setClasses(strArray[17]);
-            jobRecord.setNumber(strArray[18]);
-            jobRecord.setExperience(strArray[22]);
-            jobRecord.setAddress(strArray[27]);
+            jobOperatingPostCollect.setPay(strArray[6]);
+            jobOperatingPostCollect.setEducation(strArray[10]);
+            jobOperatingPostCollect.setClasses(strArray[17]);
+            jobOperatingPostCollect.setNumber(strArray[18]);
+            jobOperatingPostCollect.setExperience(strArray[22]);
+            jobOperatingPostCollect.setAddress(strArray[27]);
 
             URLConnection connection3 = url1.openConnection();
             connection3.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
@@ -90,7 +90,7 @@ public class _58TcWeb {
             parser.setEncoding("utf-8");
             NodeList nodeListForm2 = parser.extractAllNodesThatMatch(filterClassB);
             str = nodeListForm2.asString();
-            jobRecord.setAttraction(HtmlParserUtils.removeSpaceEnter(str));
+            jobOperatingPostCollect.setAttraction(HtmlParserUtils.removeSpaceEnter(str));
 
             URLConnection connection4 = url1.openConnection();
             connection4.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
@@ -98,7 +98,7 @@ public class _58TcWeb {
             parser.setEncoding("utf-8");
             NodeList nodeListForm3 = parser.extractAllNodesThatMatch(filterClassFormIneer);
             str = nodeListForm3.asString();
-            jobRecord.setDesc(HtmlParserUtils.removeHtmlTag(HtmlParserUtils.removeSpaceEnter(str)));
+            jobOperatingPostCollect.setDesc(HtmlParserUtils.removeHtmlTag(HtmlParserUtils.removeSpaceEnter(str)));
 
         } catch (ParserException e) {
             e.printStackTrace();
@@ -107,13 +107,13 @@ public class _58TcWeb {
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            return jobRecord;
+            return jobOperatingPostCollect;
         }
     }
 
-    public List<JobRecord> getRecord() throws InterruptedException {
+    public List<JobOperatingPostCollect> getRecord() throws InterruptedException {
 
-        List<JobRecord> list = new ArrayList<>();
+        List<JobOperatingPostCollect> list = new ArrayList<>();
 
         for(int i=1;i<=3;i++){
             this.setQueryUrll(i);
@@ -121,9 +121,9 @@ public class _58TcWeb {
             Iterator<String> itTemp = urlSetTemp.iterator();
             while(itTemp.hasNext()){
                 Thread.sleep(1000);
-                JobRecord jobRecord = extractLinks(itTemp.next());
-                if (null != jobRecord.getTitle()) {
-                    list.add(jobRecord);
+                JobOperatingPostCollect jobOperatingPostCollect = extractLinks(itTemp.next());
+                if (null != jobOperatingPostCollect.getTitle()) {
+                    list.add(jobOperatingPostCollect);
                 }
             }
         }

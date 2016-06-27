@@ -47,9 +47,9 @@ public class GanJiWeb {
         return urlSet;
     }
 
-    public  JobRecord extractLinks(String url){
-        JobRecord jobRecord = new JobRecord();
-        jobRecord.setUrl(url);
+    public JobOperatingPostCollect extractLinks(String url) {
+        JobOperatingPostCollect jobOperatingPostCollect = new JobOperatingPostCollect();
+        jobOperatingPostCollect.setUrl(url);
         try {
 
             NodeFilter filterClassA = new HasAttributeFilter("class", "clearfix pos-relat");
@@ -68,12 +68,12 @@ public class GanJiWeb {
             String str2 = HtmlParserUtils.removeSpaceEnter2(str);
             String[] strArray = str2.split("\n");
 
-            jobRecord.setClasses(strArray[2].substring(strArray[2].indexOf("：") + 1));
-            jobRecord.setPay(strArray[5].substring(0, strArray[5].indexOf("急用钱")));
-            jobRecord.setEducation(strArray[6].substring(strArray[2].indexOf("：") + 1));
-            jobRecord.setExperience(strArray[8].substring(strArray[2].indexOf("：") + 1));
-            jobRecord.setNumber(strArray[10].substring(strArray[2].indexOf("：") + 1));
-            jobRecord.setAddress(strArray[19].substring(strArray[2].indexOf("：") + 1));
+            jobOperatingPostCollect.setClasses(strArray[2].substring(strArray[2].indexOf("：") + 1));
+            jobOperatingPostCollect.setPay(strArray[5].substring(0, strArray[5].indexOf("急用钱")));
+            jobOperatingPostCollect.setEducation(strArray[6].substring(strArray[2].indexOf("：") + 1));
+            jobOperatingPostCollect.setExperience(strArray[8].substring(strArray[2].indexOf("：") + 1));
+            jobOperatingPostCollect.setNumber(strArray[10].substring(strArray[2].indexOf("：") + 1));
+            jobOperatingPostCollect.setAddress(strArray[19].substring(strArray[2].indexOf("：") + 1));
 
             URLConnection connection2 = url1.openConnection();
             connection2.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
@@ -81,7 +81,7 @@ public class GanJiWeb {
             parser.setEncoding("utf-8");
             NodeList nodeListForm = parser.extractAllNodesThatMatch(filterClassB);//内容
             str = nodeListForm.asString();
-            jobRecord.setAttraction(HtmlParserUtils.removeSpaceEnter3(str));
+            jobOperatingPostCollect.setAttraction(HtmlParserUtils.removeSpaceEnter3(str));
 
             URLConnection connection3 = url1.openConnection();
             connection3.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
@@ -89,7 +89,7 @@ public class GanJiWeb {
             parser.setEncoding("utf-8");
             NodeList nodeListForm2 = parser.extractAllNodesThatMatch(filterClassFormIneer);
             str = nodeListForm2.asString();
-            jobRecord.setDesc(HtmlParserUtils.removeSpaceEnter3(str));
+            jobOperatingPostCollect.setDesc(HtmlParserUtils.removeSpaceEnter3(str));
 
             URLConnection connection4 = url1.openConnection();
             connection4.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
@@ -97,8 +97,8 @@ public class GanJiWeb {
             parser.setEncoding("utf-8");
             NodeList nodeListForm3 = parser.extractAllNodesThatMatch(titleNodeFilter);
             str = nodeListForm3.asString();
-            jobRecord.setTitle(str.substring(str.indexOf("【") + 1, str.indexOf(",")));
-            jobRecord.setCompany(str.substring(str.indexOf(",") + 1, str.indexOf("】")));
+            jobOperatingPostCollect.setTitle(str.substring(str.indexOf("【") + 1, str.indexOf(",")));
+            jobOperatingPostCollect.setCompany(str.substring(str.indexOf(",") + 1, str.indexOf("】")));
 
         } catch (ParserException e) {
             e.printStackTrace();
@@ -107,13 +107,13 @@ public class GanJiWeb {
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            return jobRecord;
+            return jobOperatingPostCollect;
         }
     }
 
-    public List<JobRecord> getRecord() throws InterruptedException {
+    public List<JobOperatingPostCollect> getRecord() throws InterruptedException {
 
-        List<JobRecord> list = new ArrayList<>();
+        List<JobOperatingPostCollect> list = new ArrayList<>();
 
         for(int i=1;i<=3;i++){
             this.setQueryUrll(i);
@@ -121,9 +121,9 @@ public class GanJiWeb {
             Iterator<String> itTemp = urlSetTemp.iterator();
             while(itTemp.hasNext()){
                 Thread.sleep(1000);
-                JobRecord jobRecord = extractLinks(itTemp.next());
-                if (null != jobRecord.getTitle()) {
-                    list.add(jobRecord);
+                JobOperatingPostCollect jobOperatingPostCollect = extractLinks(itTemp.next());
+                if (null != jobOperatingPostCollect.getTitle()) {
+                    list.add(jobOperatingPostCollect);
                 }
             }
         }

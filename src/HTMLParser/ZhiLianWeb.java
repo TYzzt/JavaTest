@@ -32,9 +32,9 @@ public class ZhiLianWeb {
         this.queryUrl = queryUrl;
     }
 
-    public  JobRecord extractLinks(String url) {
-        JobRecord jobRecord = new JobRecord();
-        jobRecord.setUrl(url);
+    public JobOperatingPostCollect extractLinks(String url) {
+        JobOperatingPostCollect jobOperatingPostCollect = new JobOperatingPostCollect();
+        jobOperatingPostCollect.setUrl(url);
         try {
             // 1、构造一个Parser，并设置相关的属性
             URL url1 = new URL(url);
@@ -60,17 +60,17 @@ public class ZhiLianWeb {
                     Node[] nodelist1 = divNode.getChildrenAsNodeArray();
                     for(Node node1:nodelist1){
                         if(node1.getText().equals("h1")){
-                            jobRecord.setTitle(node1.getFirstChild().getText());    //标题
+                            jobOperatingPostCollect.setTitle(node1.getFirstChild().getText());    //标题
                         }
                         if(node1.getText().equals("h2")){
                             if(null!=node1.getFirstChild().getFirstChild()){
-                                jobRecord.setCompany(node1.getFirstChild().getFirstChild().getText());    //公司
+                                jobOperatingPostCollect.setCompany(node1.getFirstChild().getFirstChild().getText());    //公司
                             }
 
                         }
                         if(node1.getText().equals("div style=\"width:683px;\" class=\"welfare-tab-box\"")){//吸引
                             NodeList nodelist2 = node1.getChildren();
-                            jobRecord.setAttraction(nodelist2.asString());
+                            jobOperatingPostCollect.setAttraction(nodelist2.asString());
                         }
                     }
 
@@ -88,14 +88,14 @@ public class ZhiLianWeb {
             String str2 = HtmlParserUtils.removeSpaceEnter2(str);
             String strArray[] = str2.split("\\|");
 
-            jobRecord.setPay(strArray[1].substring(5));
-            jobRecord.setAddress(strArray[2].substring(5));
-            jobRecord.setPublishData(strArray[3].substring(5));
-            jobRecord.setNature(strArray[4].substring(5));
-            jobRecord.setExperience(strArray[5].substring(5));
-            jobRecord.setEducation(strArray[6].substring(5));
-            jobRecord.setNumber(strArray[7].substring(5));
-            jobRecord.setClasses(strArray[8].substring(5));
+            jobOperatingPostCollect.setPay(strArray[1].substring(5));
+            jobOperatingPostCollect.setAddress(strArray[2].substring(5));
+            jobOperatingPostCollect.setPublishData(strArray[3].substring(5));
+            jobOperatingPostCollect.setNature(strArray[4].substring(5));
+            jobOperatingPostCollect.setExperience(strArray[5].substring(5));
+            jobOperatingPostCollect.setEducation(strArray[6].substring(5));
+            jobOperatingPostCollect.setNumber(strArray[7].substring(5));
+            jobOperatingPostCollect.setClasses(strArray[8].substring(5));
 
             URLConnection connection3 = url1.openConnection();
             connection3.setRequestProperty("X-Forwarded-For",HtmlParserUtils.getRandomIp());
@@ -108,9 +108,9 @@ public class ZhiLianWeb {
             str2 = HtmlParserUtils.removeHtmlTag(str);
             strArray = str2.split("\\|");
 
-            jobRecord.setDesc(strArray[2]);
+            jobOperatingPostCollect.setDesc(strArray[2]);
            if(strArray.length>7){
-               jobRecord.setAddress(strArray[7]);
+               jobOperatingPostCollect.setAddress(strArray[7]);
            }
         } catch (ParserException e) {
             e.printStackTrace();
@@ -119,7 +119,7 @@ public class ZhiLianWeb {
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            return jobRecord;
+            return jobOperatingPostCollect;
         }
     }
 
@@ -139,17 +139,17 @@ public class ZhiLianWeb {
         return urlSet;
     }
 
-    public  List<JobRecord> getRecord() throws InterruptedException {
+    public List<JobOperatingPostCollect> getRecord() throws InterruptedException {
 
-        List<JobRecord> list = new ArrayList<>();
+        List<JobOperatingPostCollect> list = new ArrayList<>();
         Set<String> urlSet = getUrls(queryUrl); //获取url
 
         Iterator<String> it = urlSet.iterator();
         while(it.hasNext()){
             Thread.sleep(1000);
-            JobRecord jobRecord = extractLinks(it.next());
-            if (null != jobRecord.getTitle()) {
-                list.add(jobRecord);
+            JobOperatingPostCollect jobOperatingPostCollect = extractLinks(it.next());
+            if (null != jobOperatingPostCollect.getTitle()) {
+                list.add(jobOperatingPostCollect);
             }
         }
         //翻页
@@ -158,9 +158,9 @@ public class ZhiLianWeb {
         Iterator<String> it2 = urlSet2.iterator();
         while(it2.hasNext()){
             Thread.sleep(1000);
-            JobRecord jobRecord = extractLinks(it2.next());
-            if (null != jobRecord.getTitle()) {
-                list.add(jobRecord);
+            JobOperatingPostCollect jobOperatingPostCollect = extractLinks(it2.next());
+            if (null != jobOperatingPostCollect.getTitle()) {
+                list.add(jobOperatingPostCollect);
             }
         }
         return list;

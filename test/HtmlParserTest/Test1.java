@@ -37,28 +37,28 @@ public class Test1 {
 
     @Test
     public void testgetJob() throws InterruptedException {
-        List<JobRecord> list =  new ZhiLianWeb().getRecord();
+        List<JobOperatingPostCollect> list = new ZhiLianWeb().getRecord();
         System.out.println(1);
     }
     @Test
     public void testgetJob51() throws InterruptedException {
-        List<JobRecord> list =  new _51JobWeb().getRecord();
+        List<JobOperatingPostCollect> list = new _51JobWeb().getRecord();
         System.out.println(1);
     }
     @Test
     public void testgetJobChin() throws InterruptedException {
-        List<JobRecord> list =  new ChinahrWeb().getRecord();
+        List<JobOperatingPostCollect> list = new ChinahrWeb().getRecord();
         System.out.println(1);
     }
     @Test
     public void testgetJob58() throws InterruptedException {
-        List<JobRecord> list =  new _58TcWeb().getRecord();
+        List<JobOperatingPostCollect> list = new _58TcWeb().getRecord();
         System.out.println(1);
     }
 
     @Test
     public void testgetJobGj() throws InterruptedException {
-        List<JobRecord> list = new GanJiWeb().getRecord();
+        List<JobOperatingPostCollect> list = new GanJiWeb().getRecord();
         System.out.println(1);
     }
     @Test

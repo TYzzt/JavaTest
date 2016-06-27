@@ -3,7 +3,7 @@ package HTMLParser;
 /**
  * Created by ZhaoTao on 2016/6/20.
  */
-public class JobRecord {
+public class JobOperatingPostCollect {
     private String url;
     private String title;
     private String pay;
@@ -27,24 +27,6 @@ public class JobRecord {
         this.state = state;
     }
 
-    @Override
-    public String toString() {
-        return "JobRecord{" +
-                "url='" + url + '\'' +
-                ", title='" + title + '\'' +
-                ", pay='" + pay + '\'' +
-                ", address='" + address + '\'' +
-                ", company='" + company + '\'' +
-                ", nature='" + nature + '\'' +
-                ", experience='" + experience + '\'' +
-                ", education='" + education + '\'' +
-                ", number='" + number + '\'' +
-                ", classes='" + classes + '\'' +
-                ", desc='" + desc + '\'' +
-                ", attraction='" + attraction + '\'' +
-                ", publishData='" + publishData + '\'' +
-                '}';
-    }
 
     public String getPublishData() {
         return publishData;
