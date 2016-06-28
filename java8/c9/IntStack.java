@@ -7,4 +7,8 @@ public interface IntStack {
     void push(int item);
 
     int pop();
+
+    default void sayHello() {
+        System.out.println("hello");
+    }
 }

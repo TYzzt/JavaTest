@@ -12,6 +12,10 @@ public class DynStack implements IntStack {
         tos = -1;
     }
 
+    public static void main(String[] args) {
+        IntStack stack = new DynStack(10);
+        stack.sayHello();
+    }
 
     @Override
     public void push(int item) {
@@ -35,5 +39,9 @@ public class DynStack implements IntStack {
         } else {
             return stck[--tos];
         }
+    }
+
+    public void sayHello() {
+        System.out.println("dyn-hello");
     }
 }
