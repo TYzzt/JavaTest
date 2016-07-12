@@ -15,6 +15,7 @@ public class UseFunctionInterfaceDemo {
             return result;
         };
 
+        String a = "a";
         System.out.println(function.apply(3));
 
     }
