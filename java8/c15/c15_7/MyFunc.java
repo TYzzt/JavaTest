@@ -5,6 +5,4 @@ package c15.c15_7;
  */
 public interface MyFunc {
     MyClass func(int n);
-
-    boolean equals(Object o);
 }

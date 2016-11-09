@@ -98,4 +98,10 @@ public class Test1 {
         f.extractLinks("http://tj.ganji.com/zpcaiwushenji/1677673895x.htm");
     }
 
+    @Test
+    public void testTime() {
+
+
+    }
+
 }

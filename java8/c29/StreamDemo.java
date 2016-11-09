@@ -1,6 +1,7 @@
 package c29;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -16,6 +17,8 @@ public class StreamDemo {
         myList.add(20);
         myList.add(4);
         myList.add(90);
+
+        Collections.sort(myList, (o1, o2) -> o1 > o2 ? 0 : 1);
 
         System.out.println("Original：" + myList);
 
