@@ -5,6 +5,8 @@ import org.htmlparser.util.ParserException;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +23,12 @@ public class LeKuaiTest {
     @Test
     public void testTuPian() throws IOException {
         HappyaccLogin.getPic("http://www.happyacc.com/md/vericode/securimage_show.php?sid=0.26672960309127003");
+    }
+
+    @Test
+    public void testTuPin() throws IOException {
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
+        System.out.println(format.format(new Date()));
     }
 
     @Test
@@ -45,16 +53,27 @@ public class LeKuaiTest {
                 "       <input type=\"hidden\"  name=\"packageBuyId\" value='1808471'\t   \t\t   id='packageBuyId'>\n" +
                 "  ";
 
-        Pattern p = Pattern.compile("(<form action=\"./enterExam.do \" method=\"post\" id=\"form\">)([\\s\\S]*?)(</form>)");
-        Matcher m = p.matcher(str2);
+        Pattern p = Pattern.compile("(<form method=\"post\" action=\"./enterExamLogin.do\" id=\"form\">)([\\s\\S]*?)(</form>)");
+        Matcher m = p.matcher(str);
         if (m.find()) {
-            str2 = m.group(2);
-            System.out.println("Found value: " + str2);
+            str = m.group(2);
+            System.out.println("Found value: " + str);
         }
-        Pattern p2 = Pattern.compile("(name=\")([\\w]*)(\" *)(value=')([\\w\\W]*?)(')");
-        Matcher m2 = p2.matcher(str2);
+        Pattern p2 = Pattern.compile("(name=\")([\\w]*)(\" *)(value=['\"])([\\w\\W]*?)(['\"])");
+        Matcher m2 = p2.matcher(str);
         while (m2.find()) {
             System.out.println("Found value: " + m2.group(2) + m2.group(5));
+        }
+
+        Pattern p01 = Pattern.compile("(<span  id=\"testCardCode2\">)([\\w\\W]*?)(</span>)");
+        Matcher m0 = p01.matcher(str);
+        if (m0.find()) {
+            System.out.println("testCardCode=" + m0.group(2));
+        }
+        Pattern p02 = Pattern.compile("(<span  id=\"papersCode2\">)([\\w\\W]*?)(</span>)");
+        Matcher m00 = p02.matcher(str);
+        if (m00.find()) {
+            System.out.println("papersCode=" + m00.group(2));
         }
 
 

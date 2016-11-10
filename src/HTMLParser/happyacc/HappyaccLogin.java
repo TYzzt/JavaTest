@@ -10,6 +10,8 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +33,8 @@ public class HappyaccLogin {
 
     static String enterExamUrl = "http://exam.happyacc.com/enterExam.do"; //登陆页
     static String enterExamLoginUrl = "http://exam.happyacc.com/enterExamLogin.do"; //登陆
+    static String insertExamRecord = "http://exam.happyacc.com/insertExamRecord.do"; //插入记录
+    static String goexams = "http://exam.happyacc.com/goexams.do?examstyle=1"; //考试界面
 
 
     public static void main(String[] args) throws IOException, ParserException {
@@ -74,17 +78,29 @@ public class HappyaccLogin {
         /*解析试卷信息页*/
         String exameDescPage = naioePage(examInfoUrl);
 
-        /*打开登陆页*/
+        /*打开考试登陆页*/
         String parttern1 = "(<form action=\"./enterExam.do \" method=\"post\" id=\"form\">)([\\s\\S]*?)(</form>)";
         String parm = getExamInfoForm(exameDescPage, parttern1);
+        message("parm:" + parm);
         String exameLoginPage = openPostUrl(enterExamUrl, parm);
 
-        /*登陆*/
+        /*考试登陆*/
         String parttern2 = "(<form method=\"post\" action=\"./enterExamLogin.do\" id=\"form\">)([\\s\\S]*?)(</form>)";
-        String loginParm = getExamInfoForm(parttern2, parttern2);
-        String loginPageOne = openPostUrl(enterExamLoginUrl, loginParm);
+        String loginParm = getExamInfoForm(exameLoginPage, parttern2); //参数
+        message("loginParm:" + loginParm);
+        String insert = openPostUrl(insertExamRecord, loginParm); //插入记录
+        message("insertRecord:" + insert);
+        String loginPageOne = openPostUrl(enterExamLoginUrl, loginParm); //考试登陆
+        message("登陆成功！");
 
-        message(loginPageOne);
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
+        String hour = format.format(new Date());
+        loginParm += "&hour=" + hour;
+
+        String examePage = openPostUrl(goexams, loginParm); //考试界面
+        message("-----考试界面");
+        message(examePage);
+
 
     }
 
@@ -144,9 +160,11 @@ public class HappyaccLogin {
 
         //取Cookie
         BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        responseCookie = connection.getHeaderField("Set-Cookie");//取到所用的Cookie
+        String cookie = connection.getHeaderField("Set-Cookie");//取到所用的Cookie
+        if (null != cookie) {
+            responseCookie = cookie;
+        }
         message("cookie:" + responseCookie);
-
         //取返回的页面
         String line = br.readLine();
         while (line != null) {
@@ -205,7 +223,10 @@ public class HappyaccLogin {
             sb.append(node.toHtml());
         }
         message("=================================================");
-        responseCookie = connection.getHeaderField("Set-Cookie");//取到所用的Cookie
+        String cookie = connection.getHeaderField("Set-Cookie");//取到所用的Cookie
+        if (null != cookie) {
+            responseCookie = cookie;
+        }
         message("cookie:" + responseCookie);
         return sb.toString();
     }
@@ -218,11 +239,24 @@ public class HappyaccLogin {
      */
     public static String getExamInfoForm(String pageStr, String pattern) {
         StringBuffer sb = new StringBuffer();
+
         Pattern p = Pattern.compile(pattern);
         Matcher m = p.matcher(pageStr); //取出form
         if (m.find()) {
             pageStr = m.group(2);
-            System.out.println("Found value: " + pageStr);
+        }
+
+        if (pattern.contains("enterExamLogin")) { //登陆考试特殊处理
+            Pattern p01 = Pattern.compile("(<span  id=\"testCardCode2\">)([\\w\\W]*?)(</span>)");
+            Matcher m01 = p01.matcher(pageStr);
+            if (m01.find()) {
+                sb.append("testCardCode=" + m01.group(2));
+            }
+            Pattern p02 = Pattern.compile("(<span  id=\"papersCode2\">)([\\w\\W]*?)(</span>)");
+            Matcher m00 = p02.matcher(pageStr);
+            if (m00.find()) {
+                sb.append("&papersCode=" + m00.group(2));
+            }
         }
 
         Pattern p2 = Pattern.compile("(name=\")([\\w]*)(\" *)(value=['\"])([\\w\\W]*?)(['\"])");
@@ -232,7 +266,6 @@ public class HappyaccLogin {
                 sb.append("&");
             }
             sb.append(m2.group(2) + "=" + m2.group(5));
-            System.out.println("Found value: " + m2.group(2) + m2.group(5));
         }
         return sb.toString();
 
