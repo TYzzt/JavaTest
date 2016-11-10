@@ -35,15 +35,18 @@ public class HappyaccLogin {
     static String enterExamLoginUrl = "http://exam.happyacc.com/enterExamLogin.do"; //登陆
     static String insertExamRecord = "http://exam.happyacc.com/insertExamRecord.do"; //插入记录
     static String goexams = "http://exam.happyacc.com/goexams.do?examstyle=1"; //考试界面
+    static String getSubject = "http://exam.happyacc.com/exam.do?examstyle=1"; //获得题目url
 
+    static String paperId;
 
     public static void main(String[] args) throws IOException, ParserException {
 
+        paperId = null;
 
         /*获取验证码*/
         getPic(vericodeUrl);
         message("----------------\n获取验证码成功！");
-        File file = new File("D:/verCode.txt");
+        File file = new File("D:/verCode.txt"); //需手动修改。。
         String ver = "";
         try (FileInputStream f = new FileInputStream(file)) {
             for (int i = 0; i < 4; i++) {
@@ -79,27 +82,44 @@ public class HappyaccLogin {
         String exameDescPage = naioePage(examInfoUrl);
 
         /*打开考试登陆页*/
-        String parttern1 = "(<form action=\"./enterExam.do \" method=\"post\" id=\"form\">)([\\s\\S]*?)(</form>)";
-        String parm = getExamInfoForm(exameDescPage, parttern1);
+        String parttern = "(<form action=\"./enterExam.do \" method=\"post\" id=\"form\">)([\\s\\S]*?)(</form>)";
+        String parm = getExamInfoForm(exameDescPage, parttern);
         message("parm:" + parm);
         String exameLoginPage = openPostUrl(enterExamUrl, parm);
 
         /*考试登陆*/
-        String parttern2 = "(<form method=\"post\" action=\"./enterExamLogin.do\" id=\"form\">)([\\s\\S]*?)(</form>)";
-        String loginParm = getExamInfoForm(exameLoginPage, parttern2); //参数
+        parttern = "(<form method=\"post\" action=\"./enterExamLogin.do\" id=\"form\">)([\\s\\S]*?)(</form>)";
+        String loginParm = getExamInfoForm(exameLoginPage, parttern); //参数
         message("loginParm:" + loginParm);
         String insert = openPostUrl(insertExamRecord, loginParm); //插入记录
         message("insertRecord:" + insert);
         String loginPageOne = openPostUrl(enterExamLoginUrl, loginParm); //考试登陆
+
         message("登陆成功！");
 
-        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
+        /*进入考试界面*/
+        parttern = "(<form action=\"./goexam.do\\?examstyle=1\" id=\"form\" method=\"post\">)([\\s\\S]*?)(</form>)";
+        String intoExameParm = getExamInfoForm(loginPageOne, parttern);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String hour = format.format(new Date());
-        loginParm += "&hour=" + hour;
+        intoExameParm += "&hour=" + hour;
 
-        String examePage = openPostUrl(goexams, loginParm); //考试界面
-        message("-----考试界面");
-        message(examePage);
+        message("intoExameParm:" + intoExameParm);
+        openPostUrl(goexams, intoExameParm); //考试界面
+        message("考试界面进入成功！");
+
+        /*获得考题*/
+        if (null == paperId) {
+            message("获得考题失败");
+        }
+        {
+            String paperParm = "paperid=" + paperId;
+            String paperJson = openPostUrl(getSubject, paperParm); //获得考题
+            message(paperJson);
+        }
+
+
+
 
 
     }
@@ -237,11 +257,12 @@ public class HappyaccLogin {
      * @param pageStr
      * @return
      */
-    public static String getExamInfoForm(String pageStr, String pattern) {
+    public static String getExamInfoForm(String pageStr, String pattern) throws IOException {
         StringBuffer sb = new StringBuffer();
 
+        //取出form
         Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(pageStr); //取出form
+        Matcher m = p.matcher(pageStr);
         if (m.find()) {
             pageStr = m.group(2);
         }
@@ -259,7 +280,23 @@ public class HappyaccLogin {
             }
         }
 
-        Pattern p2 = Pattern.compile("(name=\")([\\w]*)(\" *)(value=['\"])([\\w\\W]*?)(['\"])");
+        if (pattern.contains("goexam")) { //进入考试特殊处理
+            Pattern p3 = Pattern.compile("(id=\")([\\w]*)(\"\\s*)(value=['\"])([\\w\\W]*?)(['\"])");
+            Matcher m3 = p3.matcher(pageStr);
+            while (m3.find()) {
+                String g2 = m3.group(2);
+                String g5 = m3.group(5);
+                if (g2.equals("paperId")) {
+                    sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder(); //64解码
+                    g5 = new String(decoder.decodeBuffer(g5));
+                    paperId = g5; //保存考题ID
+                }
+                sb.append(g2 + "=" + g5);
+            }
+        }
+
+        /*获取form表单的key value*/
+        Pattern p2 = Pattern.compile("(name=\")([\\w]*)(\"\\s*)(value=['\"])([\\w\\W]*?)(['\"])");
         Matcher m2 = p2.matcher(pageStr);
         while (m2.find()) {
             if (sb.length() > 0) {
