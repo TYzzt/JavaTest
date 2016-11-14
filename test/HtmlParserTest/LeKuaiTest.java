@@ -22,7 +22,9 @@ public class LeKuaiTest {
 
     @Test
     public void testTuPian() throws IOException {
-        HappyaccLogin.getPic("http://www.happyacc.com/md/vericode/securimage_show.php?sid=0.26672960309127003");
+        for (int i = 0; i < 10; i++) {
+            HappyaccLogin.getPic("http://www.happyacc.com/md/vericode/securimage_show.php?sid=0.26672960309127003");
+        }
     }
 
     @Test

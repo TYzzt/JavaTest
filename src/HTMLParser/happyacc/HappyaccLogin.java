@@ -137,7 +137,7 @@ public class HappyaccLogin {
 
         responseCookie = connection.getHeaderField("Set-Cookie");//取到所用的Cookie
         InputStream dataInputStream = connection.getInputStream();
-        String imageName = "D:/" + Math.random() + ".jpg";
+        String imageName = "D:/vercodet/" + Math.random() + ".jpg";
         FileOutputStream fileOutputStream = new FileOutputStream(new File(imageName));
         byte[] buffer = new byte[1024];
         int length;
