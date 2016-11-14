@@ -30,7 +30,6 @@ public class HappyaccLogin {
     static String responseCookie;//标示Session必须
 
     static String cjfkmfUrl = "http://www.happyacc.com/ws/exampassport.php?key=happyaccpassport&from=http%3A%2F%2Fexam.happyacc.com%2FexamDesc.do%3FexamId%3D140";//《财经法规》免费试卷（一）
-    static String cjfkmfUrl2 = "http://www.happyacc.com/ws/exampassport.php?key=happyaccpassport&from=http%3A%2F%2Fexam.happyacc.com%2FexamDesc.do%3FexamId%3D1347";//《财经法规》免费试卷（一）
 
     static String enterExamUrl = "http://exam.happyacc.com/enterExam.do"; //登陆页
     static String enterExamLoginUrl = "http://exam.happyacc.com/enterExamLogin.do"; //登陆
@@ -72,7 +71,7 @@ public class HappyaccLogin {
 
         /*获取试卷信息url*/
         String examInfoUrl = null; //试卷信息url
-        String exaemDesc = naioePage(cjfkmfUrl2);
+        String exaemDesc = naioePage(cjfkmfUrl);
         Pattern p = Pattern.compile("(szUrl=')(.*)(')");
         Matcher m = p.matcher(exaemDesc);
         if (m.find()) {
