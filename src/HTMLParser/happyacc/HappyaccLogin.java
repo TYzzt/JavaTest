@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * \* User: ZhaoTao
  * \* Date: 2016/11/8
  * \* Time: 17:30
- * \* Description: 模拟登录+爬虫
+ * \* Description:   模拟登录+爬虫
  * \
  */
 public class HappyaccLogin {
