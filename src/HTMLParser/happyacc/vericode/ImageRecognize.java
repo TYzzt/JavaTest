@@ -8,7 +8,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * \* Created with IntelliJ IDEA.
@@ -33,7 +35,7 @@ public class ImageRecognize {
 
     public static int isWhite(int colorInt) {
         Color color = new Color(colorInt);
-        if (color.getRed() + color.getGreen() + color.getBlue() > 700) {
+        if (color.getRed() + color.getGreen() + color.getBlue() > 600) {
             return 1;
         }
         return 0;
@@ -182,7 +184,7 @@ public class ImageRecognize {
                 /**
                  * 如果目录则递归继续遍历
                  */
-                findFiles(filenameSuffix, file.getAbsolutePath());
+                fileList.addAll(findFiles(filenameSuffix, file.getAbsolutePath()));
             } else {
                 /**
                  * 如果不是目录。
@@ -197,6 +199,64 @@ public class ImageRecognize {
         return fileList;
     }
 
+    public static String getSingleCharOcr(BufferedImage img,
+                                          Map<BufferedImage, String> map) {
+        String result = "";
+        int width = img.getWidth();
+        int height = img.getHeight();
+        int min = width * height;
+
+        for (BufferedImage bi : map.keySet()) {
+            int count = 0;
+            if (bi.getHeight() < height || bi.getWidth() < width) {
+                continue;
+            }
+            Label1:
+            for (int x = 0; x < width; ++x) {
+                for (int y = 0; y < height; ++y) {
+                    if (isWhite(img.getRGB(x, y)) != isWhite(bi.getRGB(x, y))) {
+                        count++;
+                        if (count >= min)
+                            break Label1;
+                    }
+                }
+            }
+            if (count < min) {
+                min = count;
+                result = map.get(bi);
+            }
+        }
+
+        return result;
+    }
+
+    public static String getOrcChar(String filePath) throws Exception {
+        File f = new File(filePath);
+        BufferedImage img = removeGround(f);
+        Map<BufferedImage, String> map = loadTrainData();
+        List<BufferedImage> listImg = splitImage(img);
+        String result = "";
+        for (BufferedImage bi : listImg) {
+            result += getSingleCharOcr(bi, map);
+        }
+        return result;
+    }
+
+    /**
+     * 加载训练记录
+     *
+     * @return
+     * @throws Exception
+     */
+    public static Map<BufferedImage, String> loadTrainData() throws Exception {
+        Map<BufferedImage, String> map = new HashMap<BufferedImage, String>();
+        List<File> files = findFiles("jpg", trainPath);
+        for (File file : files) {
+            map.put(ImageIO.read(file), file.getName().charAt(0) + "");
+        }
+        return map;
+    }
+
     public static void downImag(int n) throws IOException {
         for (int i = 0; i < n; i++) {
             HappyaccLogin.getPic("http://www.happyacc.com/md/vericode/securimage_show.php?sid=0.26672960309127003");
@@ -204,8 +264,14 @@ public class ImageRecognize {
     }
 
     public static void main(String[] args) throws Exception {
-        //downImag(50); //下载验证码
-        //saveSplitImg(); //保存图片用于学习
+        //  downImag(50); //下载验证码*/
+        //   saveSplitImg(); //保存图片用于学习
+
+
+        System.out.println("识别：" + getOrcChar(path + "VCYG.jpg"));
+
+
+
     }
 
 
