@@ -9,8 +9,8 @@ public class ID1001 {
     public static void main(String[] args) {
         while (cin.hasNext()){
             BigDecimal a = cin.nextBigDecimal();
-            int b = cin.nextInt();
-            String ans = a.pow(b).stripTrailingZeros().toPlainString();
+            int b = cin.nextInt(); //stripTrailingZeros() 返回一个BigDecimal，它在数值上等于这一个，但表示形式移除所有尾部零。
+            String ans = a.pow(b).stripTrailingZeros().toPlainString(); //toPlainString()  返回不带指数字段的此 BigDecimal 的字符串表示形式
             if(ans.charAt(0)=='0'){
                 cout.println(ans.substring(1));
             }else {
