@@ -9,6 +9,7 @@
 public class TestXX {
     public static void foo() {
         if ((Integer) null > 1) {
+            System.out.println(1);
         }
     }
 
