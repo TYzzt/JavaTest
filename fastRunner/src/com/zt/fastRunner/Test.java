@@ -10,6 +10,8 @@ package com.zt.fastRunner;
  */
 public class Test {
     public static void main(String[] args) {
-        System.out.println(1);
+        HackSystem.out.print(1111);
+        HackSystem.out.print("adfadfa的订单的");
+        System.out.println(HackSystem.getBufferString());
     }
 }

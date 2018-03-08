@@ -51,7 +51,9 @@ public class RunnerServlet extends HttpServlet {
         byte[] b = new byte[is.available()];
         is.read(b);
         is.close();*/
-
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/plain; charset=utf-8");
         PrintWriter out = response.getWriter();
         out.println(JavaClassExecuter.execute(b2));
         out.flush();

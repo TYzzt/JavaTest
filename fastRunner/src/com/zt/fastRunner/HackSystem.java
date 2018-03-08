@@ -13,11 +13,10 @@ import java.io.PrintStream;
  * \
  */
 public class HackSystem {
-    public static final InputStream in = System.in;
-    public static final PrintStream err = out;
     private static ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
+    public static final InputStream in = System.in;
     public static final PrintStream out = new PrintStream(buffer);
+    public static final PrintStream err = out;
 
     public static void main(String[] args) {
         System.out.println();

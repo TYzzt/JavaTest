@@ -7,6 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/java8" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/java8lambdasexercises/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/webService" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/数据结构与算法分析第3版" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

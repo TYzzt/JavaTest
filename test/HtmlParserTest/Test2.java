@@ -1,7 +1,10 @@
 package HtmlParserTest;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * \* Created with IntelliJ IDEA.
@@ -23,7 +26,6 @@ public class Test2 {
 
         System.out.println(list.get(0).get("time"));
         /*System.out.println(new Date().getTime());*/
-        System.out.println(1);
-
+        /* System.out.println(System.get);*/
     }
 }
