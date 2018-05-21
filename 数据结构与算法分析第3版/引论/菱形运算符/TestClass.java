@@ -41,6 +41,9 @@ public class TestClass {
 
         System.out.println(totalArea(squares));
 
+        Integer[] arr = {1, 2};
+        System.out.println(findMax(arr));
+
     }
 
 }
