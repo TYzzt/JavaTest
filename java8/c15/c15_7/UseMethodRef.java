@@ -2,6 +2,7 @@ package c15.c15_7;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by ZhaoTao on 2016/7/7.
@@ -21,7 +22,7 @@ public class UseMethodRef {
         a1.add(new MyClass(3));
 
         MyClass maxValObj = Collections.max(a1, UseMethodRef::compareMC);
-        MyClass maxValObj2 = Collections.max(a1, (MyClass a, MyClass b) -> a.getVal() - b.getVal());
+        MyClass maxValObj2 = Collections.max(a1, Comparator.comparingInt(MyClass::getVal));
 
         System.out.println(maxValObj.getVal());
         System.out.println(maxValObj2.getVal());

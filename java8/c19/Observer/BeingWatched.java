@@ -11,7 +11,7 @@ public class BeingWatched extends Observable {
         for (; period >= 0; period--) {
 
             setChanged();  //调用通知前必须调用setchanged方法
-            notifyObservers(new Integer(period));
+            notifyObservers(period);
 
             try {
                 Thread.sleep(100);

@@ -16,6 +16,6 @@ public class SplitertorDemo {
         vals.add(3.0);
         vals.forEach(n -> System.out.println(n));    //list直接迭代
         Spliterator<Double> spliterator = vals.spliterator(); //JDK8新增的迭代器，支持并行迭代
-        while (spliterator.tryAdvance(n -> System.out.println(n))) ;//tryAdvance省去了next()和hasNext()方法
+        while (spliterator.tryAdvance(System.out::println)) ;//tryAdvance省去了next()和hasNext()方法
     }
 }

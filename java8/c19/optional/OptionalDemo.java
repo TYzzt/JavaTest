@@ -29,9 +29,7 @@ public class OptionalDemo {
         Optional<String> hasVal2 = Optional.ofNullable(null);
         System.out.println(hasVal2.orElse("Null Test"));
 
-        Optional<String> hasVal2_change = hasVal.map(n -> {
-            return n.toUpperCase();
-        });
+        Optional<String> hasVal2_change = hasVal.map(String::toUpperCase);
         System.out.println(hasVal2_change.orElse("Null Test"));
 
     }

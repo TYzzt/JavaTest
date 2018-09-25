@@ -10,6 +10,8 @@ public class RuntimeTest {
         System.out.println("totalMemory:" + runtime.totalMemory());
         System.out.println("free:" + runtime.freeMemory());
         Integer i[] = new Integer[1000];
+        Integer a[] = new Integer[1000];
+        Integer b[] = new Integer[1000];
         System.out.println("free:" + runtime.freeMemory());
 
 

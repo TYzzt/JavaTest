@@ -9,7 +9,7 @@ public class NewThread implements Runnable {
     boolean suspendFlag;
 
     NewThread(String threadName) {
-        t = new Thread(threadName);
+        t = new Thread(this, threadName);
         t.start();
         System.out.println("New thread:" + t);
         suspendFlag = false;

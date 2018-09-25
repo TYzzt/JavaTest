@@ -13,6 +13,7 @@ public class DirTreeList {
 
         System.out.println("Directory tree starting with " + dirname + ":\n");
 
+        //遍历
         try {
             Files.walkFileTree(Paths.get(dirname), new MyFileVisitor());
         } catch (IOException e) {

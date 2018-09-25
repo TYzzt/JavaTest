@@ -2,6 +2,9 @@ package c29;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -17,9 +20,13 @@ public class StreamDemo4 {
 
         Stream<Double> sqrtRootStrm = myList.stream().map(a -> Math.sqrt(a));
 
-        double productOfSqrtRoots = sqrtRootStrm.reduce(1.0, (a, b) -> a * b);
+        /*     sqrtRootStrm.forEach(System.out::println);*/
 
-        System.out.println(productOfSqrtRoots);
+        Map<Double, Double> map = sqrtRootStrm.collect(Collectors.toMap(Double::doubleValue, Function.identity()));
+        System.out.println(map);
+/*        double productOfSqrtRoots = sqrtRootStrm.reduce(1.0, (a, b) -> a * b);
+
+        System.out.println(productOfSqrtRoots);*/
 
     }
 }

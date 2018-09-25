@@ -15,7 +15,7 @@ public class MappedChannelRead {
             long fSize = fChan.size();
             MappedByteBuffer mbuf = fChan.map(FileChannel.MapMode.READ_ONLY, 0, fSize);
             for (int i = 0; i < fSize; i++) {
-                System.out.println((char) mbuf.get());
+                System.out.print((char) mbuf.get());
             }
         } catch (IOException e) {
             e.printStackTrace();

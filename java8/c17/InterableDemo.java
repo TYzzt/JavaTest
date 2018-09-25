@@ -1,5 +1,7 @@
 package c17;
 
+import c15.TestC15;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,11 +26,7 @@ public class InterableDemo {
                 "http://search.51job.com/jobsearch/search_result.php?fromJs=1&jobarea=050000%2C00&funtype=0000&industrytype=00&keyword=%E6%80%BB%E8%B4%A6&keywordtype=2&lang=c&stype=2&postchannel=0000&fromType=1&confirmdate=9",
                 "http://search.51job.com/jobsearch/search_result.php?fromJs=1&jobarea=050000%2C00&funtype=0000&industrytype=00&keyword=%E5%BE%80%E6%9D%A5&keywordtype=2&lang=c&stype=2&postchannel=0000&fromType=1&confirmdate=9"
         );
-
-        Iterable<String> ib = () -> list.iterator();
-        ib.forEach(s -> System.out.println(s));
-
-
+        list.forEach(TestC15::testStr);
     }
 
 }

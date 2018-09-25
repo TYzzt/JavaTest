@@ -23,7 +23,7 @@ public class AlgorithmsDemo {
 
         Collections.sort(ll, r);
 
-        ll.forEach(integer -> System.out.println(integer));
+        ll.forEach(System.out::println);
 
         Collections.shuffle(ll);   //随机化链表
 

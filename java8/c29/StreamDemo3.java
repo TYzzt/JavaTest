@@ -13,6 +13,10 @@ public class StreamDemo3 {
 
         myList.add(4.0);
         myList.add(16.0);
+        //parallelStream 并发 线程不安全
+
+        double productOfSqrRoots0 = myList.stream().reduce(1.0, (a, b) -> a * Math.sqrt(b));
+        System.out.println(productOfSqrRoots0);
 
         double productOfSqrRoots = myList.parallelStream().reduce(1.0, (a, b) -> a * Math.sqrt(b));
 

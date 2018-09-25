@@ -11,4 +11,11 @@ public class TestC15 {
         MyNumber myNum = () -> 123.45;
         System.out.println(myNum.getValue());
     }
+
+    private static int i = 0;
+
+    public static void testStr(String string) {
+        System.out.println(++i + ":" + string);
+    }
+
 }
