@@ -7,7 +7,7 @@ public class GenericFunctionalInterfaceDemo {
 
     public static void main(String[] args) {
         SomeFunc<String> reverse = (str) -> {
-            String result = "";
+            String result = "1";
             int i = 0;
 
             for (i = str.length() - 1; i >= 0; i--) {

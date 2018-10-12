@@ -19,7 +19,7 @@ public class StreamDemo9 {
         myList.add("D1");
 
         Stream<String> myStream = myList.stream();
-        //并行迭代器
+        //分割迭代器
         Spliterator<String> stringSpliterator = myStream.spliterator();
         while (stringSpliterator.tryAdvance(n -> {
             System.out.println(n);

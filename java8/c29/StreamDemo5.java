@@ -30,7 +30,7 @@ public class StreamDemo5 {
 
         List<NamePhonePhone> newList = nameAndPhone.collect(Collectors.toList());
 
-        LinkedList<NamePhonePhone> npLIst = nameAndPhone.collect(() -> new LinkedList<>(), (list, element) -> list.add(element), (listA, listB) -> listA.addAll(listB));
+        LinkedList<NamePhonePhone> npLIst = nameAndPhone.collect(LinkedList::new, LinkedList::add, LinkedList::addAll);
 
 
         Stream<NamePhonePhone> phonePhoneStream = myList.stream().filter(a -> a.name.equals("Jame"))

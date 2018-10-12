@@ -15,6 +15,7 @@ public class HanZi统计 {
 
         int[] test = new int[65536];
         for (char c : str.toCharArray()) {
+            System.out.println((int) c);
             test[c] += 1;
         }
         for (int i = 0; i < test.length; i++) {
