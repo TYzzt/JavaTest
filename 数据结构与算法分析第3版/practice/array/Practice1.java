@@ -1,4 +1,4 @@
-package practice;
+package practice.array;
 
 import java.util.Arrays;
 import java.util.BitSet;
@@ -24,7 +24,7 @@ public class Practice1 {
         printMissingNumber(new int[]{1, 2, 3, 4, 6, 9, 8}, 10);
 
         // four missing number
-        printMissingNumber(new int[]{1, 2, 3, 4, 9, 8}, 10);
+        printMissingNumber(new int[]{1, 2, 3, 4, 9, 8}, 12);
 
         // Only one missing number in array
         int[] iArray = new int[]{1, 2, 3, 5};
@@ -49,7 +49,7 @@ public class Practice1 {
                 Arrays.toString(numbers), count);
         int lastMissingIndex = 0;
 
-        for (int i = 0; i < missingCount; i++) {
+        for (int i = 0; i < missingCount; i++) {/*此方法返回下一个清除位的索引。*/
             lastMissingIndex = bitSet.nextClearBit(lastMissingIndex);
             System.out.println(++lastMissingIndex);
         }

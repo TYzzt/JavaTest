@@ -1,33 +1,40 @@
 package javaTest;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import java.util.Arrays;
 
-public class HelloWorld extends Application {
+public class HelloWorld {
+
+    char[] value = {'a', 'b', 'c', 'd'};
+
     public static void main(String[] args) {
-        launch(args);
+        //launch(args);
+        new HelloWorld().testRev();
+
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello World!");
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("123");
-            }
-        });
 
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 300, 250));
-        primaryStage.show();
+    public void sayHello() {
+        SerializableTest<ACMEBicycle> test = new SerializableBean<>();
+        System.out.println(test.getClazz());
     }
+
+
+    public void testRev() {
+        System.out.println(Arrays.toString(value));
+        int count = value.length;
+        System.out.println(count);
+        int n = count - 1;
+        System.out.println((n - 1) >> 1);
+        for (int j = (n - 1) >> 1; j >= 0; j--) {
+            int k = n - j;
+            System.out.println(j + "," + k);
+            char cj = value[j];
+            char ck = value[k];
+            value[j] = ck;
+            value[k] = cj;
+        }
+        System.out.println(Arrays.toString(value));
+    }
+
+
 }

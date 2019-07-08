@@ -34,7 +34,7 @@ public class ExplicitChannelRead {
                     //rewind the buffer so that it can be read 倒回
                     mBuf.rewind();
                     for (int i = 0; i < count; i++) {
-                        System.out.println((char) mBuf.get());
+                        System.out.print((char) mBuf.get());
                     }
                 }
             } while (count != -1);

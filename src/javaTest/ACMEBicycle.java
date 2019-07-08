@@ -14,6 +14,31 @@ public class ACMEBicycle implements Bicycle {
     // all be implemented. Compilation will fail if those
     // methods are missing from this class.
 
+
+    public int getCadence() {
+        return cadence;
+    }
+
+    public void setCadence(int cadence) {
+        this.cadence = cadence;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getGear() {
+        return gear;
+    }
+
+    public void setGear(int gear) {
+        this.gear = gear;
+    }
+
     public void changeCadence(int newValue) {
         cadence = newValue;
     }

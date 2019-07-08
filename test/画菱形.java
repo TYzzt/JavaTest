@@ -11,6 +11,8 @@ public class 画菱形 {
     public static void main(String[] args) {
         hua(5);
         hua(6);
+        System.out.println(11 | 1);
+        System.out.println((100 | 010));
     }
 
     static void hua(int n) {
