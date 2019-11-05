@@ -1,5 +1,6 @@
 package c20;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class FileInputStreamDemo {
     public static void main(String[] args) {
         int size;
 
-        try (FileInputStream f = new FileInputStream("FileInputStreamDemo.class")) {
+        try (FileInputStream f = new FileInputStream(new File("D:\\新建文本文档.txt"))) {
 
             System.out.println("Total Available Bytes:" + (size = f.available()));
 

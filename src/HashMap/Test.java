@@ -15,6 +15,21 @@ public class Test {
 
     public static void main(String[] args) {
         Map map = new HashMap();
-        System.out.println(1 << 30);
+        map.putIfAbsent("a", 1);
+        map.putIfAbsent("a", 2);
+        System.out.println(map.toString());
+
+        map = new HashMap();
+        map.put("b", 1);
+        map.putIfAbsent("b", 2);
+        System.out.println(map.toString());
+
+        map = new HashMap();
+        map.computeIfAbsent("a", e -> {
+            return e;
+        });
+
+        System.out.println(map.toString());
+
     }
 }

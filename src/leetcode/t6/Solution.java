@@ -12,8 +12,8 @@ public class Solution {
 
     public static void main(String[] args) {
         System.out.println(new Solution().convert(
-                "Apalindromeisaword,phrase,number,orothersequenceofunitsthatcanbereadthesamewayineitherdirection,withgeneralallowancesforadjustmentstopunctuationandworddividers."
-                , 3));
+                "案例；上空的飞机；雷达数据发；拉萨酱豆腐；ldsadkfjdskfjdksafdsafdffdfdf"
+                , 5));
     }
 
     public String convert(String s, int numRows) {
